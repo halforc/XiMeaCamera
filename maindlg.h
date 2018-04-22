@@ -2,16 +2,42 @@
 #define MAINDLG_H
 
 #include <QDialog>
-#include "./XiAPI/xiApiPlusOcv.hpp"
+#include "typedefine.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <QPixmap>
-#include <QTimer>
+#include <QThread>
+#include <QDebug>
+
+#include "playercontrol.h"
 namespace Ui {
 class mainDlg;
 }
+
+class Worker : public QThread
+{
+    Q_OBJECT
+private:
+    void run()
+    {
+        mStart = true;
+        while(mStart){
+            qDebug()<<"Worker::onTimeout get called from?: "<<QThread::currentThreadId();
+            sleep(1);
+        }
+    }
+
+public:
+
+    void stop(){
+        mStart = false;
+    }
+
+private:
+    bool mStart;
+};
 
 class mainDlg : public QDialog
 {
@@ -24,15 +50,28 @@ public:
 public:
     void paintEvent(QPaintEvent *event);
     cv::Mat cv_mat_image;
-    QImage Mat2QImage(cv::Mat cvImg);
     QImage img;
 
-    QTimer* mTimer;
+    xiAPIplusCameraOcv m_xiCam;
 public slots:
     void on_test_clicked();
-    void onTimeOut();
+    void on_open_clicked();
+    void on_record_clicked();
+    void on_replay_clicked();
+    void on_close_clicked();
+
+signals:
+    void test(QLabel* label);
+
 private:
     Ui::mainDlg *ui;
+    playercontrol* t;
+    QImage Mat2QImage(cv::Mat cvImg);
+    void initial();
+
+    void readDevParaFromXML(DEVICE_SETTING *pDevInfo);
+    void writeDevParaToXML(DEVICE_INFO* pDevInfo);
+    bool eventFilter(QObject *, QEvent *);
 };
 
 #endif // MAINDLG_H
