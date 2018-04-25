@@ -3,41 +3,17 @@
 
 #include <QDialog>
 #include "typedefine.h"
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
 #include <QPixmap>
 #include <QThread>
 #include <QDebug>
-
+#include <QTimer>
+#include "acquisitionthread.h"
 #include "playercontrol.h"
 namespace Ui {
 class mainDlg;
 }
-
-class Worker : public QThread
-{
-    Q_OBJECT
-private:
-    void run()
-    {
-        mStart = true;
-        while(mStart){
-            qDebug()<<"Worker::onTimeout get called from?: "<<QThread::currentThreadId();
-            sleep(1);
-        }
-    }
-
-public:
-
-    void stop(){
-        mStart = false;
-    }
-
-private:
-    bool mStart;
-};
 
 class mainDlg : public QDialog
 {
@@ -48,11 +24,17 @@ public:
     ~mainDlg();
 
 public:
-    void paintEvent(QPaintEvent *event);
     cv::Mat cv_mat_image;
     QImage img;
-
+    QPixmap pixmap;
     xiAPIplusCameraOcv m_xiCam;
+
+    QTimer* timer;
+
+    AcquisitionThread* m_acqThread;
+    QThread* m_objThread;
+
+    void startObjThread();
 public slots:
     void on_test_clicked();
     void on_open_clicked();
@@ -60,18 +42,29 @@ public slots:
     void on_replay_clicked();
     void on_close_clicked();
 
+    void showImage(cv::Mat& image);
+
+    void onExposureTimeChanged(int value);
+    void onFrameRateChanged(QString value);
+    void onDPIChanged(QString value);
+
 signals:
     void test(QLabel* label);
-
+    void startObjThreadWork1();
+    void saveImage();
+    void stopSaveImage();
 private:
     Ui::mainDlg *ui;
     playercontrol* t;
     QImage Mat2QImage(cv::Mat cvImg);
     void initial();
+    bool m_bIsRecording;
+    DEVICE_INFO getDevInfo(xiAPIplus_Camera& cam);
 
     void readDevParaFromXML(DEVICE_SETTING *pDevInfo);
-    void writeDevParaToXML(DEVICE_INFO* pDevInfo);
-    bool eventFilter(QObject *, QEvent *);
+    void writeDevParaToXML(xiAPIplusCameraOcv &cam);
+
+    void closeEvent(QCloseEvent* event);
 };
 
 #endif // MAINDLG_H

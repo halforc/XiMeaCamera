@@ -20,7 +20,22 @@
 #define INC_FOCUS_DISTANCE      1
 
 typedef struct{
-    char* devName;
+    int devID;
+    int devStatus;
+    int exposureTime;
+    float lensAperture;
+    float frameRate;
+    float focusDistance;
+    float width;
+    float height;
+    //触发源 包括无、上升沿、下降沿、软件、高电平、低电平六种
+    XI_TRG_SOURCE trggerSource;
+    //触发方式
+    XI_TRG_SELECTOR trggerSelector;
+}DEVICE_SETTING,*PDEVICE_SETTING;
+
+typedef struct{
+    int devNum;
     //曝光时间
     int miniExposureTime;
     int maxExposureTime;
@@ -45,22 +60,9 @@ typedef struct{
     float miniHeight;
     float maxHeight;
     float heightIncrement;
+    DEVICE_SETTING setting;
 
 }DEVICE_INFO,*PDEV_INFO;
 
-typedef struct{
-    int devID;
-    int devStatus;
-    int exposureTime;
-    float lensAperture;
-    float frameRate;
-    float focusDistance;
-    float width;
-    float height;
-    //触发源 包括无、上升沿、下降沿、软件、高电平、低电平六种
-    XI_TRG_SOURCE trggerSource;
-    //触发方式
-    XI_TRG_SELECTOR trggerSelector;
-}DEVICE_SETTING,*PDEVICE_SETTING;
 
 #endif // TYPEDEFINE_H

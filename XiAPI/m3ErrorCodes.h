@@ -42,8 +42,8 @@ typedef int MM40_RETURN;
 #define MM40_SHADING_TOOBRIGHT            27 //!< Shading is too bright
 #define MM40_SHADING_TOODARK              28 //!< Shading is too dark
 #define MM40_TOO_LOW_GAIN                 29 //!< Gain is too low
-#define MM40_INVALID_BPL                  30 //!< Invalid bad pixel list
-#define MM40_BPL_REALLOC                  31 //!< Bad pixel list realloc error
+#define MM40_INVALID_BPL                  30 //!< Invalid sensor defect correction list
+#define MM40_BPL_REALLOC                  31 //!< Error while sensor defect correction list reallocation
 #define MM40_INVALID_PIXEL_LIST           32 //!< Invalid pixel list
 #define MM40_INVALID_FFS                  33 //!< Invalid Flash File System
 #define MM40_INVALID_PROFILE              34 //!< Invalid profile

@@ -26,12 +26,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         maindlg.cpp \
-    playercontrol.cpp
+    playercontrol.cpp \
+    acquisitionthread.cpp
 
 HEADERS += \
         maindlg.h \
     typedefine.h \
-    playercontrol.h
+    playercontrol.h \
+    acquisitionthread.h
 
 FORMS += \
         maindlg.ui \
@@ -85,11 +87,10 @@ LIBS += -LD:/Qt/Qt_Opencv3.3_contrib/lib \
 -lopencv_videostab330d
 }
 
+win32: LIBS += -LC:/XIMEA/API/x64/ -lxiapi64
 
-unix:!macx|win32: LIBS += -L$$PWD/libs/ -lxiapi64
+INCLUDEPATH += C:/XIMEA/API/x64
+DEPENDPATH += C:/XIMEA/API/x64
 
-INCLUDEPATH += $$PWD/libs
-DEPENDPATH += $$PWD/libs
-
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/xiapi64.lib
-else:unix:!macx|win32-g++: PRE_TARGETDEPS += $$PWD/libs/libxiapi64.a
+win32:!win32-g++: PRE_TARGETDEPS += C:/XIMEA/API/x64/xiapi64.lib
+else:win32-g++: PRE_TARGETDEPS += C:/XIMEA/API/x64/libxiapi64.a

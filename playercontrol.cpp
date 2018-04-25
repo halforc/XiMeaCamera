@@ -10,8 +10,7 @@ playercontrol::playercontrol(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    setAttribute(Qt::WA_TranslucentBackground, true);
-//    ui->pushButton->setFlat(true);
+    setAttribute(Qt::WA_TranslucentBackground, true);
 }
 
 playercontrol::~playercontrol()
